@@ -5,12 +5,19 @@
         {{ column.name }}
       </div>
       <div class="task-list">
-        <div class="task" v-for="task of column.tasks" :key="task.id">
+        <router-link
+          class="task"
+          :to="{ name: 'task', params: { id: task.id } }"
+          v-for="task of column.tasks"
+          :key="task.id"
+        >
           <span>{{ task.name }}</span>
           <p v-if="task.description">{{ task.description }}</p>
-        </div>
+        </router-link>
       </div>
     </div>
+
+    <router-view />
   </div>
 </template>
 
