@@ -6,7 +6,7 @@
       </div>
       <div class="task-list">
         <div class="task" v-for="task of column.tasks" :key="task.id">
-          <h3>{{ task.name }}</h3>
+          <span>{{ task.name }}</span>
           <p v-if="task.description">{{ task.description }}</p>
         </div>
       </div>
@@ -27,14 +27,29 @@ export default {
 <style scoped>
 .board {
   display: flex;
+  gap: 1rem;
 }
 
 .column {
-  background-color: white;
+  background-color: lightgray;
+  width: 20rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .column-name {
   margin-bottom: 1rem;
   font-weight: bold;
+}
+
+.task {
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+.task + .task {
+  margin-top: 0.5rem;
 }
 </style>
