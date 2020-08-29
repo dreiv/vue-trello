@@ -20,6 +20,9 @@ export default new Vuex.Store({
         id: uuid(),
         description: ''
       })
+    },
+    UPDATE_TASK(state, { task, key, value }) {
+      task[key] = value
     }
   },
   actions: {

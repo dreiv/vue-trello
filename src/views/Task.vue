@@ -1,8 +1,18 @@
 <template>
   <div class="backdrop" @click.self="close">
     <div class="dialog">
-      {{ task.name }}
-      <textarea class="description" :value="task.description" />
+      <input
+        class="name"
+        type="text"
+        :value="task.name"
+        @change="updateTaskProperty($event, 'name')"
+      >
+
+      <textarea
+        class="description"
+        :value="task.description"
+        @change="updateTaskProperty($event, 'description')"
+      />
     </div>
   </div>
 </template>
@@ -13,7 +23,7 @@ import { mapGetters } from "vuex";
 export default {
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
@@ -26,6 +36,13 @@ export default {
   methods: {
     close() {
       this.$router.push({ name: "board" });
+    },
+    updateTaskProperty(event, key) {
+      this.$store.commit("UPDATE_TASK", {
+        task: this.task,
+        key,
+        value: event.target.value,
+      });
     },
   },
 };
