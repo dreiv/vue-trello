@@ -50,10 +50,15 @@ export default {
 }
 
 .task {
+  display: block;
+  color: inherit;
   background-color: white;
   padding: 0.5rem;
   border-radius: 0.25rem;
   font-weight: bold;
+}
+.task:not(:hover) {
+  text-decoration: none;
 }
 
 .task + .task {

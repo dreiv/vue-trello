@@ -1,6 +1,8 @@
 <template>
-  <div>
-    {{ task.name }}
+  <div class="backdrop" @click.self="close">
+    <div class="dialog">
+      {{ task.name }}
+    </div>
   </div>
 </template>
 
@@ -20,8 +22,31 @@ export default {
       return this.getTask(this.id);
     },
   },
+  methods: {
+    close() {
+      this.$router.push({ name: "board" });
+    },
+  },
 };
 </script>
 
 <style scoped>
+.backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: #0005;
+}
+
+.dialog {
+  background-color: white;
+  width: 100%;
+  max-width: 60rem;
+  margin: 10% auto;
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
 </style>
