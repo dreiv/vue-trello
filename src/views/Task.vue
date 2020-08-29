@@ -53,7 +53,6 @@ export default {
 
 .description {
   box-sizing: border-box;
-  display: block;
   width: 100%;
   margin-top: 0.5rem;
   padding: 0.5rem;

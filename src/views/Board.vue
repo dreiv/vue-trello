@@ -15,6 +15,13 @@
           <p v-if="task.description">{{ task.description }}</p>
         </router-link>
       </div>
+
+      <input
+        type="text"
+        class="add-task"
+        placeholder="+ Enter new task"
+        @keyup.enter="createTask($event, column.tasks)"
+      />
     </div>
 
     <router-view />
@@ -27,6 +34,16 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState(["board"]),
+  },
+  methods: {
+    createTask(event, tasks) {
+      this.$store.commit("CREATE_TASK", {
+        tasks,
+        name: event.target.value,
+      });
+
+      event.target.value = "";
+    },
   },
 };
 </script>
@@ -53,6 +70,7 @@ export default {
   display: block;
   color: inherit;
   background-color: white;
+  margin-bottom: 0.5rem;
   padding: 0.5rem;
   border-radius: 0.25rem;
   font-weight: bold;
@@ -61,7 +79,11 @@ export default {
   text-decoration: none;
 }
 
-.task + .task {
-  margin-top: 0.5rem;
+.add-task {
+  background: none;
+  border: none;
+  height: 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 </style>
