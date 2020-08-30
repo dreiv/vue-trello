@@ -1,19 +1,28 @@
 <template>
   <div class="board">
-    <div class="column" v-for="(column, index) of board.columns" :key="index">
+    <div
+      class="column"
+      v-for="(column, $columnIndex) of board.columns"
+      :key="$columnIndex"
+      @drop="moveTask($event, column.tasks)"
+      @dragover.prevent
+      @dragenter.prevent
+    >
       <div class="column-name">
         {{ column.name }}
       </div>
       <div class="task-list">
-        <router-link
+        <div
           class="task"
-          :to="{ name: 'task', params: { id: task.id } }"
-          v-for="task of column.tasks"
+          v-for="(task, $taskIndex) of column.tasks"
           :key="task.id"
+          draggable
+          @dragstart="pickupTask($event, $taskIndex, $columnIndex)"
+          @click="goToTask(task)"
         >
           <span>{{ task.name }}</span>
           <p v-if="task.description">{{ task.description }}</p>
-        </router-link>
+        </div>
       </div>
 
       <input
@@ -36,6 +45,9 @@ export default {
     ...mapState(["board"]),
   },
   methods: {
+    goToTask(task) {
+      this.$router.push({ name: "task", params: { id: task.id } });
+    },
     createTask(event, tasks) {
       this.$store.commit("CREATE_TASK", {
         tasks,
@@ -43,6 +55,26 @@ export default {
       });
 
       event.target.value = "";
+    },
+    pickupTask(event, taskIndex, fromColumnIndex) {
+      console.log("touched");
+
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.dropEffect = "move";
+
+      event.dataTransfer.setData("task-index", taskIndex);
+      event.dataTransfer.setData("from-column-index", fromColumnIndex);
+    },
+    moveTask(event, toTasks) {
+      const fromColumnIndex = event.dataTransfer.getData("from-column-index");
+      const fromTasks = this.board.columns[fromColumnIndex].tasks;
+      const taskIndex = event.dataTransfer.getData("task-index");
+
+      this.$store.commit("MOVE_TASK", {
+        fromTasks,
+        toTasks,
+        taskIndex,
+      });
     },
   },
 };
