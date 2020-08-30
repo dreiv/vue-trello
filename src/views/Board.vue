@@ -32,9 +32,18 @@
 
       <input
         type="text"
-        class="add-task"
+        class="add-item"
         placeholder="+ Enter new task"
         @keyup.enter="createTask($event, column.tasks)"
+      />
+    </div>
+
+    <div class="column">
+       <input
+        type="text"
+        class="add-item"
+        placeholder="+ Enter new column"
+        @keyup.enter="createColumn($event)"
       />
     </div>
 
@@ -56,6 +65,13 @@ export default {
     createTask(event, tasks) {
       this.$store.commit("CREATE_TASK", {
         tasks,
+        name: event.target.value,
+      });
+
+      event.target.value = "";
+    },
+    createColumn(event) {
+      this.$store.commit("CREATE_COLUMN", {
         name: event.target.value,
       });
 
@@ -116,12 +132,14 @@ export default {
 <style scoped>
 .board {
   display: flex;
+  align-items: flex-start;
   gap: 1rem;
 }
 
 .column {
   background-color: lightgray;
   width: 20rem;
+  flex-shrink: 0;
   padding: 0.5rem;
   border-radius: 0.25rem;
 }
@@ -144,11 +162,13 @@ export default {
   text-decoration: none;
 }
 
-.add-task {
-  background: none;
+.add-item {
   border: none;
   height: 2.5rem;
   width: 100%;
   box-sizing: border-box;
+}
+.add-item:not(:focus) {
+  background: none;
 }
 </style>
